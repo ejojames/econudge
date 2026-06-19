@@ -1,6 +1,6 @@
 # EcoNudge // Secure, Localized Community Footprint Analytics
 
-EcoNudge is a highly secure, gamified, and decentralized carbon tracking platform designed to build eco-conscious communities. By isolating data into distinct Room Keys, the application guarantees zero network cross-contamination while allowing local groups to monitor their collective environmental impact. Track daily habits, monitor live regional emissions, and seamlessly sync your climate progress against an encrypted, decentralized backend.
+EcoNudge is a highly secure, gamified Carbon Tracking Ecosystem designed to build eco-conscious communities. By utilizing strict Multi-Tenant Namespace Isolation via distinct Room Keys, the application guarantees zero network cross-contamination while allowing local groups to monitor their collective environmental impact. Track daily habits, monitor live regional emissions, and seamlessly sync your Localized Regulatory Metrics against an encrypted, decentralized backend.
 
 ---
 

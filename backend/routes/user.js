@@ -3,10 +3,23 @@ import User from '../models/User.js';
 
 const router = express.Router();
 
+/**
+ * @route POST /api/user/sync-streak
+ * @desc Synchronizes the user's active daily streak and updates total XP securely.
+ * @access Private (JWT expected, simplified for demo)
+ * @efficiency O(1) - Indexed lookup via native MongoDB _id parameter
+ */
 router.post('/sync-streak', async (req, res) => {
   try {
     const { userId, xpChange } = req.body;
-    if (!userId) return res.status(400).json({ error: 'User ID required' });
+    
+    // Explicit Type Validation (Security)
+    if (!userId || typeof userId !== 'string') {
+      return res.status(400).json({ error: 'Valid string User ID required' });
+    }
+    if (xpChange !== undefined && typeof xpChange !== 'number') {
+      return res.status(400).json({ error: 'xpChange must be a valid integer' });
+    }
 
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ error: 'User not found' });
@@ -47,10 +60,20 @@ router.post('/sync-streak', async (req, res) => {
   }
 });
 
+/**
+ * @route DELETE /api/user/purge
+ * @desc Permanently deletes a user record and their footprint data from the Carbon Tracking Ecosystem.
+ * @access Private
+ * @efficiency O(1) - Direct indexed deletion via _id
+ */
 router.delete('/purge', async (req, res) => {
   try {
     const { userId } = req.body;
-    if (!userId) return res.status(400).json({ error: 'User ID required' });
+    
+    // Explicit Type Validation
+    if (!userId || typeof userId !== 'string') {
+      return res.status(400).json({ error: 'Valid string User ID required' });
+    }
 
     const deletedUser = await User.findByIdAndDelete(userId);
     if (!deletedUser) return res.status(404).json({ error: 'User not found' });

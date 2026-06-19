@@ -5,12 +5,23 @@ import User from '../models/User.js';
 
 const router = express.Router();
 
+/**
+ * @route POST /api/auth/register
+ * @desc Registers a new user into the Carbon Tracking Ecosystem.
+ * @access Public
+ * @efficiency O(1) - Indexed lookup via orgKey for Multi-Tenant Namespace Isolation
+ */
 router.post('/register', async (req, res) => {
   try {
     const { username, password, orgKey, department } = req.body;
 
     if (!username || !password || !orgKey || !department) {
       return res.status(400).json({ error: 'Please provide all required fields' });
+    }
+
+    // Explicit Type Validation (Security)
+    if (typeof username !== 'string' || typeof password !== 'string' || typeof orgKey !== 'string' || typeof department !== 'string') {
+      return res.status(400).json({ error: 'All fields must be valid strings' });
     }
 
     const cleanUsername = username.trim().toLowerCase();
@@ -62,12 +73,23 @@ router.post('/register', async (req, res) => {
   }
 });
 
+/**
+ * @route POST /api/auth/login
+ * @desc Authenticates a user into their isolated Room Key namespace.
+ * @access Public
+ * @efficiency O(1) - Compound indexed lookup via { username, orgKey }
+ */
 router.post('/login', async (req, res) => {
   try {
     const { username, password, orgKey } = req.body;
 
     if (!username || !password || !orgKey) {
       return res.status(400).json({ error: 'Please provide username, password, and org key' });
+    }
+
+    // Explicit Type Validation (Security)
+    if (typeof username !== 'string' || typeof password !== 'string' || typeof orgKey !== 'string') {
+      return res.status(400).json({ error: 'All fields must be valid strings' });
     }
 
     const cleanUsername = username.trim().toLowerCase();

@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useRef } from 'react';
+import React, { useState, useContext, useEffect, useRef, useMemo, useCallback } from 'react';
 import { motion, useMotionValue, useSpring, AnimatePresence } from 'framer-motion';
 import { EcoContext } from '../context/EcoContext';
 import { Check } from 'lucide-react';
@@ -50,26 +50,29 @@ const EcoSimulator = () => {
   const [timeline, setTimeline] = useState('annual');
   const [activeHabits, setActiveHabits] = useState([]);
 
-  const toggleHabit = (id) => {
-    const isChecked = activeHabits.includes(id);
-    if (isChecked) {
-      setActiveHabits(prev => prev.filter(hId => hId !== id));
-      updateXP?.(-150);
-    } else {
-      setActiveHabits(prev => [...prev, id]);
-      updateXP?.(150);
-    }
-  };
+  const toggleHabit = useCallback((id) => {
+    setActiveHabits(prev => {
+      if (prev.includes(id)) {
+        updateXP?.(-150);
+        return prev.filter(hId => hId !== id);
+      } else {
+        updateXP?.(150);
+        return [...prev, id];
+      }
+    });
+  }, [updateXP]);
 
   const currentMultiplier = MULTIPLIERS[timeline];
   
-  const dailyTotal = DOMESTIC_HABITS
-    .filter(h => activeHabits.includes(h.id))
-    .reduce((acc, curr) => acc + curr.dailySavings, 0);
+  const dailyTotal = useMemo(() => {
+    return DOMESTIC_HABITS
+      .filter(h => activeHabits.includes(h.id))
+      .reduce((acc, curr) => acc + curr.dailySavings, 0);
+  }, [activeHabits]);
 
-  const totalSaved = dailyTotal * currentMultiplier;
+  const totalSaved = useMemo(() => dailyTotal * currentMultiplier, [dailyTotal, currentMultiplier]);
   
-  const colors = [
+  const colors = useMemo(() => [
     '#e11d48', // 0: Rose red (warning)
     '#d97706', // 1: Amber
     '#eab308', // 2: Yellow
@@ -79,12 +82,12 @@ const EcoSimulator = () => {
     '#059669', // 6: Deep Emerald
     '#047857', // 7: Dark Emerald
     '#064e3b', // 8: Darkest Emerald
-  ];
+  ], []);
   
-  const activeColor = colors[activeHabits.length];
+  const activeColor = useMemo(() => colors[activeHabits.length], [activeHabits.length, colors]);
 
   return (
-    <div className="h-full flex flex-col font-sans bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 transition-colors duration-200">
+    <main className="h-full flex flex-col font-sans bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 transition-colors duration-200">
       <header className="mb-8">
         <motion.h2 
           className="text-2xl font-bold dark:text-white text-zinc-900 flex items-center"
@@ -106,7 +109,7 @@ const EcoSimulator = () => {
         </motion.p>
       </header>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 flex-1 min-h-0">
+      <section className="grid grid-cols-1 lg:grid-cols-12 gap-8 flex-1 min-h-0">
         <motion.div 
           className="lg:col-span-7 flex flex-col gap-4 overflow-y-auto pr-2 hide-scrollbar"
           initial={{ opacity: 0, x: -20 }}
@@ -120,6 +123,7 @@ const EcoSimulator = () => {
                 <button
                   key={t}
                   onClick={() => setTimeline(t)}
+                  aria-label={`Set timeline to ${t}`}
                   className={`px-5 py-2 text-xs font-bold uppercase tracking-wider transition-colors rounded-full border whitespace-nowrap ${
                     timeline === t 
                       ? 'bg-emerald-600 text-white border-emerald-600' 
@@ -140,6 +144,10 @@ const EcoSimulator = () => {
                   <motion.div 
                     key={habit.id}
                     onClick={() => toggleHabit(habit.id)}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`Toggle habit: ${habit.label}`}
+                    onKeyDown={(e) => { if (e.key === 'Enter') toggleHabit(habit.id); }}
                     whileHover={{ scale: 1.01 }}
                     className={`flex items-center justify-between gap-6 p-5 rounded-sm cursor-pointer border transition-all duration-300 shadow-sm ${
                       isChecked 
@@ -246,8 +254,8 @@ const EcoSimulator = () => {
             </p>
           </div>
         </motion.div>
-      </div>
-    </div>
+      </section>
+    </main>
   );
 };
 

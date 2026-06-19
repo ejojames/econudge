@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useMemo, useCallback } from 'react';
 import { EcoContext } from '../context/EcoContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Car, Utensils, ThermometerSun, Plane, TreePine, Leaf, Sprout, Clock, MapPin, Wind, Activity } from 'lucide-react';
@@ -15,6 +15,7 @@ const CustomSlider = ({ value, min, max, step = 1, onChange }) => {
       <input 
         type="range" min={min} max={max} step={step} value={value}
         onChange={onChange}
+        aria-label="Adjust metric slider"
         className="absolute -top-2 left-0 w-full h-6 appearance-none bg-transparent cursor-pointer z-10 
         [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-emerald-400 [&::-webkit-slider-thumb]:shadow-[0_0_10px_rgba(52,211,153,0.8)] [&::-webkit-slider-thumb]:hover:scale-110 [&::-webkit-slider-thumb]:transition-transform
         [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-emerald-400 [&::-moz-range-thumb]:shadow-[0_0_10px_rgba(52,211,153,0.8)] [&::-moz-range-thumb]:hover:scale-110 [&::-moz-range-thumb]:transition-transform [&::-moz-range-thumb]:border-none"
@@ -67,27 +68,27 @@ const Dashboard = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const getSeverityColor = (value) => {
+  const getSeverityColor = useCallback((value) => {
     if (value > 5000) return 'text-rose-500';
     if (value > 2000) return 'text-amber-500';
     return 'text-emerald-500 dark:text-emerald-400';
-  };
+  }, []);
 
-  const getDemographicBenchmark = (score) => {
+  const getDemographicBenchmark = useCallback((score) => {
     const safeScore = score || 0;
     if (safeScore <= 1500) return { percentile: 95, tier: "Eco-Guardian", color: "text-emerald-600 dark:text-emerald-400" };
     if (safeScore <= 3000) return { percentile: 75, tier: "Conscious Citizen", color: "text-emerald-600 dark:text-emerald-400" };
     if (safeScore <= 5000) return { percentile: 45, tier: "Moderate Consumer", color: "text-amber-600 dark:text-amber-400" };
     if (safeScore <= 8000) return { percentile: 15, tier: "Heavy Footprint", color: "text-orange-600 dark:text-orange-400" };
     return { percentile: 3, tier: "Climate Critical", color: "text-rose-600 dark:text-rose-500" };
-  };
+  }, []);
 
-  const dietLabels = ["Vegan", "Vegetarian", "Moderate Meat", "Heavy Meat"];
-  const benchmark = getDemographicBenchmark(totalFootprint);
-  const safeTotalFootprint = totalFootprint || 0;
+  const dietLabels = useMemo(() => ["Vegan", "Vegetarian", "Moderate Meat", "Heavy Meat"], []);
+  const benchmark = useMemo(() => getDemographicBenchmark(totalFootprint), [totalFootprint, getDemographicBenchmark]);
+  const safeTotalFootprint = useMemo(() => totalFootprint || 0, [totalFootprint]);
 
   return (
-    <div className="h-full flex flex-col font-sans bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 transition-colors duration-200">
+    <main className="h-full flex flex-col font-sans bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 transition-colors duration-200">
       <header className="mb-8">
         <motion.h2 
           className="text-2xl font-bold dark:text-white text-zinc-900"
@@ -106,7 +107,7 @@ const Dashboard = () => {
         </motion.p>
       </header>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 flex-1 min-h-0">
+      <section className="grid grid-cols-1 lg:grid-cols-2 gap-8 flex-1 min-h-0">
         {/* Left Column: Assessment */}
         <div className="flex flex-col gap-6 overflow-y-auto pr-2">
           <motion.div 
@@ -332,8 +333,8 @@ const Dashboard = () => {
             </motion.div>
           </div>
         </div>
-      </div>
-    </div>
+      </section>
+    </main>
   );
 };
 
