@@ -4,10 +4,10 @@ import assert from 'node:assert';
 test('Carbon Timeline Multipliers - Mathematical Accuracy', (t) => {
     const MULTIPLIERS = { daily: 1, weekly: 7, monthly: 30, annual: 365 };
     const sampleDailySavings = 1.80; // e.g., 0.80 (AC) + 1.00 (Line dry)
-    
+
     const weeklySaved = sampleDailySavings * MULTIPLIERS.weekly;
     const annualSaved = sampleDailySavings * MULTIPLIERS.annual;
-    
+
     assert.strictEqual(weeklySaved, 12.60, 'Weekly multiplier calculates correctly');
     assert.strictEqual(annualSaved, 657.00, 'Annual multiplier calculates correctly');
 });
