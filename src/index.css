@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Custom scrollbar to match theme */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply dark:bg-zinc-950 bg-zinc-50;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply dark:bg-zinc-800 bg-zinc-300 rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply dark:bg-zinc-700 bg-zinc-400;
+  }
+
+  ::selection {
+    @apply bg-emerald-500/30 dark:text-emerald-300 text-emerald-900;
+  }
+}
