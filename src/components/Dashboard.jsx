@@ -7,7 +7,7 @@ import { EcoContext } from '../context/EcoContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Car, Utensils, ThermometerSun, Plane, TreePine, Leaf, Sprout, Clock, MapPin, Wind, Activity } from 'lucide-react';
 
-const CustomSlider = ({ value, min, max, step = 1, onChange }) => {
+const CustomSlider = ({ id, value, min, max, step = 1, onChange, ariaLabel }) => {
   const percentage = ((value - min) / (max - min)) * 100;
   
   return (
@@ -17,12 +17,18 @@ const CustomSlider = ({ value, min, max, step = 1, onChange }) => {
         style={{ width: `${percentage}%` }}
       />
       <input 
-        type="range" min={min} max={max} step={step} value={value}
+        id={id}
+        type="range"
+        min={min}
+        max={max}
+        step={step}
+        value={value}
         onChange={onChange}
-        aria-label="Adjust metric slider"
+        aria-label={ariaLabel}
         className="block w-full opacity-100 visible absolute -top-2 left-0 max-w-full mx-0 h-6 appearance-none bg-transparent cursor-pointer z-10 
         [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-emerald-400 [&::-webkit-slider-thumb]:shadow-[0_0_10px_rgba(52,211,153,0.8)] [&::-webkit-slider-thumb]:hover:scale-110 [&::-webkit-slider-thumb]:transition-transform
         [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-emerald-400 [&::-moz-range-thumb]:shadow-[0_0_10px_rgba(52,211,153,0.8)] [&::-moz-range-thumb]:hover:scale-110 [&::-moz-range-thumb]:transition-transform [&::-moz-range-thumb]:border-none"
+        style={{ display: 'block !important', width: '100% !important', visibility: 'visible !important', minWidth: '100% !important' }}
       />
     </div>
   );
@@ -115,68 +121,109 @@ const Dashboard = () => {
         {/* Left Column: Assessment */}
         <div className="flex flex-col gap-6 w-full pr-2">
           <motion.div 
-            className="block w-full bg-white dark:bg-emerald-950/10 border border-zinc-200 dark:border-emerald-500/20 rounded-sm p-6 shadow-sm transition-colors duration-200"
+            className="grid grid-cols-1 w-full gap-4 bg-white dark:bg-emerald-950/10 border border-zinc-200 dark:border-emerald-500/20 rounded-sm p-6 shadow-sm transition-colors duration-200"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.4 }}
           >
-            <h3 className="text-lg font-bold mb-6 flex items-center gap-2 dark:text-white text-zinc-900">
+            <h3 className="text-lg font-bold flex items-center gap-2 dark:text-white text-zinc-900">
               60-Second Onboarding
             </h3>
             
             <div className="space-y-8">
               {/* Commute */}
-              <div className="flex flex-col sm:flex-row sm:items-center gap-4 w-full block">
-                <label className="flex items-center gap-2 dark:text-zinc-400 text-zinc-600 font-bold whitespace-nowrap min-w-[120px] w-full sm:w-auto">
+              <div className="flex flex-col w-full items-stretch clear-both">
+                <label
+                  htmlFor="slider-commute"
+                  className="flex items-center gap-2 dark:text-zinc-400 text-zinc-600 font-bold font-mono text-sm block mb-1"
+                >
                   <Car className="w-4 h-4 dark:text-zinc-500 text-zinc-400" />
                   Daily Commute
                 </label>
-                <div className="flex-1 w-full block min-w-0">
-                  <CustomSlider min="0" max="100" value={commute} onChange={(e) => setCommute(Number(e.target.value))} />
+                <div className="w-full block">
+                  <CustomSlider
+                    id="slider-commute"
+                    min="0"
+                    max="100"
+                    value={commute}
+                    onChange={(e) => setCommute(Number(e.target.value))}
+                    ariaLabel="Daily Commute slider input in kilometers"
+                  />
                 </div>
-                <span className="self-start sm:self-auto dark:text-emerald-400 text-emerald-700 dark:bg-zinc-900 bg-emerald-50 border dark:border-zinc-800 border-emerald-200 px-2 py-1 rounded-sm whitespace-nowrap text-sm w-full sm:w-auto text-left sm:text-center">
+                <span className="dark:text-emerald-400 text-emerald-700 dark:bg-zinc-900 bg-emerald-50 border dark:border-zinc-800 border-emerald-200 px-2 py-1 rounded-sm whitespace-nowrap text-sm w-full text-left">
                   {commute} KM
                 </span>
               </div>
 
               {/* Diet */}
-              <div className="flex flex-col sm:flex-row sm:items-center gap-4 w-full block">
-                <label className="flex items-center gap-2 dark:text-zinc-400 text-zinc-600 font-bold whitespace-nowrap min-w-[120px] w-full sm:w-auto">
+              <div className="flex flex-col w-full items-stretch clear-both">
+                <label
+                  htmlFor="slider-diet"
+                  className="flex items-center gap-2 dark:text-zinc-400 text-zinc-600 font-bold font-mono text-sm block mb-1"
+                >
                   <Utensils className="w-4 h-4 dark:text-zinc-500 text-zinc-400" />
                   Diet Profile
                 </label>
-                <div className="flex-1 w-full block min-w-0">
-                  <CustomSlider min="0" max="3" step="1" value={diet} onChange={(e) => setDiet(Number(e.target.value))} />
+                <div className="w-full block">
+                  <CustomSlider
+                    id="slider-diet"
+                    min="0"
+                    max="3"
+                    step="1"
+                    value={diet}
+                    onChange={(e) => setDiet(Number(e.target.value))}
+                    ariaLabel="Diet Profile slider input ranging from Vegan to Heavy Meat"
+                  />
                 </div>
-                <span className="self-start sm:self-auto dark:text-emerald-400 text-emerald-700 dark:bg-zinc-900 bg-emerald-50 border dark:border-zinc-800 border-emerald-200 px-2 py-1 rounded-sm whitespace-nowrap text-sm w-full sm:w-auto text-left sm:text-center">
+                <span className="dark:text-emerald-400 text-emerald-700 dark:bg-zinc-900 bg-emerald-50 border dark:border-zinc-800 border-emerald-200 px-2 py-1 rounded-sm whitespace-nowrap text-sm w-full text-left">
                   {dietLabels[diet]}
                 </span>
               </div>
 
               {/* AC */}
-              <div className="flex flex-col sm:flex-row sm:items-center gap-4 w-full block">
-                <label className="flex items-center gap-2 dark:text-zinc-400 text-zinc-600 font-bold whitespace-nowrap min-w-[120px] w-full sm:w-auto">
+              <div className="flex flex-col w-full items-stretch clear-both">
+                <label
+                  htmlFor="slider-ac"
+                  className="flex items-center gap-2 dark:text-zinc-400 text-zinc-600 font-bold font-mono text-sm block mb-1"
+                >
                   <ThermometerSun className="w-4 h-4 dark:text-zinc-500 text-zinc-400" />
                   AC Usage
                 </label>
-                <div className="flex-1 w-full block min-w-0">
-                  <CustomSlider min="0" max="24" value={acUsage} onChange={(e) => setAcUsage(Number(e.target.value))} />
+                <div className="w-full block">
+                  <CustomSlider
+                    id="slider-ac"
+                    min="0"
+                    max="24"
+                    value={acUsage}
+                    onChange={(e) => setAcUsage(Number(e.target.value))}
+                    ariaLabel="AC Usage slider input in hours per day"
+                  />
                 </div>
-                <span className="self-start sm:self-auto dark:text-emerald-400 text-emerald-700 dark:bg-zinc-900 bg-emerald-50 border dark:border-zinc-800 border-emerald-200 px-2 py-1 rounded-sm whitespace-nowrap text-sm w-full sm:w-auto text-left sm:text-center">
+                <span className="dark:text-emerald-400 text-emerald-700 dark:bg-zinc-900 bg-emerald-50 border dark:border-zinc-800 border-emerald-200 px-2 py-1 rounded-sm whitespace-nowrap text-sm w-full text-left">
                   {acUsage} HR/DAY
                 </span>
               </div>
 
               {/* Flights */}
-              <div className="flex flex-col sm:flex-row sm:items-center gap-4 w-full block">
-                <label className="flex items-center gap-2 dark:text-zinc-400 text-zinc-600 font-bold whitespace-nowrap min-w-[120px] w-full sm:w-auto">
+              <div className="flex flex-col w-full items-stretch clear-both">
+                <label
+                  htmlFor="slider-flights"
+                  className="flex items-center gap-2 dark:text-zinc-400 text-zinc-600 font-bold font-mono text-sm block mb-1"
+                >
                   <Plane className="w-4 h-4 dark:text-zinc-500 text-zinc-400" />
                   Flights / Year
                 </label>
-                <div className="flex-1 w-full block min-w-0">
-                  <CustomSlider min="0" max="15" value={flights} onChange={(e) => setFlights(Number(e.target.value))} />
+                <div className="w-full block">
+                  <CustomSlider
+                    id="slider-flights"
+                    min="0"
+                    max="15"
+                    value={flights}
+                    onChange={(e) => setFlights(Number(e.target.value))}
+                    ariaLabel="Flights per Year slider input"
+                  />
                 </div>
-                <span className="self-start sm:self-auto dark:text-emerald-400 text-emerald-700 dark:bg-zinc-900 bg-emerald-50 border dark:border-zinc-800 border-emerald-200 px-2 py-1 rounded-sm whitespace-nowrap text-sm w-full sm:w-auto text-left sm:text-center">
+                <span className="dark:text-emerald-400 text-emerald-700 dark:bg-zinc-900 bg-emerald-50 border dark:border-zinc-800 border-emerald-200 px-2 py-1 rounded-sm whitespace-nowrap text-sm w-full text-left">
                   {flights} FLIGHTS
                 </span>
               </div>
@@ -351,4 +398,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-

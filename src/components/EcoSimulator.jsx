@@ -126,8 +126,10 @@ const EcoSimulator = () => {
               {['daily', 'weekly', 'monthly', 'annual'].map((t) => (
                 <button
                   key={t}
+                  id={`timeline-btn-${t}`}
                   onClick={() => setTimeline(t)}
-                  aria-label={`Set timeline to ${t}`}
+                  aria-label={`Set habit savings timeline to ${t}`}
+                  aria-pressed={timeline === t}
                   className={`px-5 py-2 text-xs font-bold uppercase tracking-wider transition-colors rounded-full border whitespace-nowrap ${
                     timeline === t 
                       ? 'bg-emerald-600 text-white border-emerald-600' 
@@ -143,33 +145,46 @@ const EcoSimulator = () => {
               {DOMESTIC_HABITS.map((habit) => {
                 const isChecked = activeHabits.includes(habit.id);
                 const habitSaved = (habit.dailySavings * currentMultiplier).toFixed(1);
+                const checkboxId = `habit-checkbox-${habit.id}`;
                 
                 return (
                   <motion.div 
                     key={habit.id}
-                    onClick={() => toggleHabit(habit.id)}
-                    role="button"
-                    tabIndex={0}
-                    aria-label={`Toggle habit: ${habit.label}`}
-                    onKeyDown={(e) => { if (e.key === 'Enter') toggleHabit(habit.id); }}
                     whileHover={{ scale: 1.01 }}
-                    className={`flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6 p-3 sm:p-5 rounded-sm cursor-pointer border transition-all duration-300 shadow-sm ${
+                    className={`flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6 p-3 sm:p-5 rounded-sm border transition-all duration-300 shadow-sm ${
                       isChecked 
                         ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-300 dark:border-emerald-500/50' 
                         : 'bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700'
                     }`}
                   >
-                    <div className="flex items-center gap-3 sm:gap-4 flex-1 w-full">
-                      <div className={`shrink-0 w-6 h-6 border rounded-sm flex items-center justify-center transition-colors ${
-                        isChecked ? 'bg-emerald-500 border-emerald-500' : 'bg-zinc-50 dark:bg-zinc-800 border-zinc-300 dark:border-zinc-700'
-                      }`}>
+                    {/* Hidden real checkbox for semantic accessibility */}
+                    <input
+                      type="checkbox"
+                      id={checkboxId}
+                      checked={isChecked}
+                      onChange={() => toggleHabit(habit.id)}
+                      aria-label={`${habit.label} — habit loop toggle to reduce carbon footprint`}
+                      className="sr-only"
+                    />
+
+                    <label
+                      htmlFor={checkboxId}
+                      className="flex items-center gap-3 sm:gap-4 flex-1 w-full cursor-pointer"
+                      aria-hidden="false"
+                    >
+                      <div
+                        aria-hidden="true"
+                        className={`shrink-0 w-6 h-6 border rounded-sm flex items-center justify-center transition-colors ${
+                          isChecked ? 'bg-emerald-500 border-emerald-500' : 'bg-zinc-50 dark:bg-zinc-800 border-zinc-300 dark:border-zinc-700'
+                        }`}
+                      >
                         {isChecked && <Check className="w-4 h-4 text-white font-bold" />}
                       </div>
                       
                       <p className={`font-sans font-medium text-sm transition-colors ${isChecked ? 'text-emerald-800 dark:text-emerald-200' : 'text-zinc-700 dark:text-zinc-300'}`}>
                         {habit.label}
                       </p>
-                    </div>
+                    </label>
 
                     <div className="flex flex-col items-start sm:items-end shrink-0 pl-9 sm:pl-0">
                       <p className="font-mono text-xs dark:text-emerald-400 text-emerald-600 font-bold tracking-tight">

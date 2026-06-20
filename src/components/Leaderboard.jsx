@@ -243,7 +243,7 @@ const Leaderboard = () => {
     <div className="h-full flex flex-col font-sans bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 transition-colors duration-200">
       <header className="mb-8">
         <motion.h2 
-          className="text-2xl font-bold flex items-center gap-3 dark:text-white text-zinc-900"
+          className="text-2xl font-bold font-mono tracking-tight flex items-center gap-3 dark:text-white text-zinc-900"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
         >
