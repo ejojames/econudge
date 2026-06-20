@@ -11,7 +11,7 @@ const router = express.Router();
  * @access Public
  * @efficiency O(1) - Indexed lookup via orgKey for Multi-Tenant Namespace Isolation
  */
-router.post('/register', async (req, res) => {
+router.post('/register', async (req, res, next) => {
   try {
     const { username, password, orgKey, department } = req.body;
 
@@ -60,16 +60,14 @@ router.post('/register', async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Register error:', error);
-    
     if (error.name === 'MongoTimeoutError' || error.name === 'MongooseServerSelectionError') {
-      return res.status(503).json({ error: 'Database timeout: Connection failed' });
+      error.status = 503;
+      error.message = 'Database timeout: Connection failed';
+    } else if (error.code === 11000) {
+      error.status = 400;
+      error.message = 'Username already exists (Duplicate Key)';
     }
-    if (error.code === 11000) {
-      return res.status(400).json({ error: 'Username already exists (Duplicate Key)' });
-    }
-    
-    res.status(500).json({ error: 'Server error during registration' });
+    next(error);
   }
 });
 
@@ -79,7 +77,7 @@ router.post('/register', async (req, res) => {
  * @access Public
  * @efficiency O(1) - Compound indexed lookup via { username, orgKey }
  */
-router.post('/login', async (req, res) => {
+router.post('/login', async (req, res, next) => {
   try {
     const { username, password, orgKey } = req.body;
 
@@ -120,13 +118,11 @@ router.post('/login', async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Login error:', error);
-    
     if (error.name === 'MongoTimeoutError' || error.name === 'MongooseServerSelectionError') {
-      return res.status(503).json({ error: 'Database timeout: Connection failed' });
+      error.status = 503;
+      error.message = 'Database timeout: Connection failed';
     }
-    
-    res.status(500).json({ error: 'Server error during login' });
+    next(error);
   }
 });
 

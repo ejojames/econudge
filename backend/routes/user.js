@@ -9,7 +9,7 @@ const router = express.Router();
  * @access Private (JWT expected, simplified for demo)
  * @efficiency O(1) - Indexed lookup via native MongoDB _id parameter
  */
-router.post('/sync-streak', async (req, res) => {
+router.post('/sync-streak', async (req, res, next) => {
   try {
     const { userId, xpChange } = req.body;
     
@@ -55,8 +55,7 @@ router.post('/sync-streak', async (req, res) => {
       streakCount: updatedUser.streakCount
     });
   } catch (error) {
-    console.error('Sync streak error:', error);
-    res.status(500).json({ error: 'Server error syncing streak' });
+    next(error);
   }
 });
 
@@ -66,7 +65,7 @@ router.post('/sync-streak', async (req, res) => {
  * @access Private
  * @efficiency O(1) - Direct indexed deletion via _id
  */
-router.delete('/purge', async (req, res) => {
+router.delete('/purge', async (req, res, next) => {
   try {
     const { userId } = req.body;
     
@@ -80,8 +79,7 @@ router.delete('/purge', async (req, res) => {
 
     res.json({ success: true, message: 'User permanently deleted' });
   } catch (error) {
-    console.error('Purge error:', error);
-    res.status(500).json({ error: 'Server error purging user' });
+    next(error);
   }
 });
 

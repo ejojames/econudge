@@ -44,6 +44,15 @@ app.use('/api/auth', authRoutes);
 app.use('/api/leaderboard', leaderboardRoutes);
 app.use('/api/user', userRoutes);
 
+// Centralized Global Error Handling Middleware
+app.use((err, req, res, next) => {
+  console.error('[Global Error]', err.stack || err);
+  res.status(err.status || 500).json({ 
+    success: false, 
+    message: err.message || "Internal Server Error" 
+  });
+});
+
 // Serve Frontend Static Assets
 app.use(express.static(path.join(__dirname, '..', 'dist')));
 

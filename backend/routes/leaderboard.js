@@ -3,7 +3,7 @@ import User from '../models/User.js';
 
 const router = express.Router();
 
-router.post('/', async (req, res) => {
+router.post('/', async (req, res, next) => {
   try {
     const { orgKey } = req.body;
     if (!orgKey) {
@@ -18,8 +18,7 @@ router.post('/', async (req, res) => {
 
     res.json(leaderboard);
   } catch (error) {
-    console.error('Leaderboard error:', error);
-    res.status(500).json({ error: 'Server error fetching leaderboard' });
+    next(error);
   }
 });
 
