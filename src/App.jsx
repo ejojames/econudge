@@ -22,7 +22,7 @@ const MainApp = () => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.3 }}
-              className="absolute inset-0 p-4 md:p-8 overflow-x-hidden"
+              className="absolute inset-0 p-4 md:p-8"
             >
               <Dashboard />
             </motion.div>
@@ -34,7 +34,7 @@ const MainApp = () => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.3 }}
-              className="absolute inset-0 p-4 md:p-8 overflow-x-hidden"
+              className="absolute inset-0 p-4 md:p-8"
             >
               <EcoSimulator />
             </motion.div>
@@ -46,7 +46,7 @@ const MainApp = () => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.3 }}
-              className="absolute inset-0 p-4 md:p-8 overflow-x-hidden"
+              className="absolute inset-0 p-4 md:p-8"
             >
               <Leaderboard />
             </motion.div>
