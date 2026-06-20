@@ -1,3 +1,7 @@
+/**
+ * EcoNudge Dashboard Module
+ * Part of the automated behavioral nudging ecosystem built for resource management optimization.
+ */
 import React, { useContext, useState, useEffect, useMemo, useCallback } from 'react';
 import { EcoContext } from '../context/EcoContext';
 import { motion, AnimatePresence } from 'framer-motion';

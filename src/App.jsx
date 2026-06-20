@@ -1,3 +1,6 @@
+/**
+ * EcoNudge: An automated behavioral nudging ecosystem built for resource management optimization.
+ */
 import React, { useState, useContext } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { EcoProvider, EcoContext } from './context/EcoContext';

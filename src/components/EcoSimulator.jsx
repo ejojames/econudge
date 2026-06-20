@@ -1,3 +1,7 @@
+/**
+ * Eco-Simulator Engine
+ * Core feature of the automated behavioral nudging ecosystem built for resource management optimization.
+ */
 import React, { useState, useContext, useEffect, useRef, useMemo, useCallback } from 'react';
 import { motion, useMotionValue, useSpring, AnimatePresence } from 'framer-motion';
 import { EcoContext } from '../context/EcoContext';
