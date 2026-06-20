@@ -222,7 +222,7 @@ const EcoSimulator = () => {
           <div className="relative z-10 flex flex-col items-center justify-center h-full p-4 sm:p-8 text-center min-h-[400px]">
             <div className="relative w-64 h-64 mb-10 flex items-center justify-center">
               {/* Background Circle */}
-              <svg className="absolute w-full h-full -rotate-90" viewBox="0 0 200 200">
+              <svg className="absolute w-full h-full -rotate-90" viewBox="0 0 200 200" aria-hidden="true" role="presentation">
                 <circle 
                   cx="100" cy="100" r="80" 
                   fill="none" 
