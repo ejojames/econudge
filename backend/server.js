@@ -30,8 +30,10 @@ app.use('/api/user', userRoutes);
 app.use(express.static(path.join(__dirname, '..', 'dist')));
 
 // SPA Catch-All Routing
-app.get('(.*)', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '..', 'dist', 'index.html'));
+app.get('/{*splat}', (req, res) => {
+    if (!req.path.startsWith('/api')) {
+        res.sendFile(path.resolve(__dirname, '..', 'dist', 'index.html'));
+    }
 });
 
 // Connect to MongoDB
