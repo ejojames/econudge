@@ -113,12 +113,21 @@ const Leaderboard = () => {
     return (
       <div className="flex flex-col items-center justify-center h-full w-full max-w-md mx-auto overflow-y-auto hide-scrollbar">
         <div className="bg-white dark:bg-emerald-950/10 border border-zinc-200 dark:border-emerald-500/20 p-8 rounded-sm shadow-sm w-full transition-colors duration-200">
-          <div className="flex justify-center mb-6">
+          <div className="flex justify-center mb-4">
             <div className="p-3 bg-emerald-50 dark:bg-zinc-900 border border-emerald-200 dark:border-zinc-800 rounded-full">
               <Lock className="w-8 h-8 text-emerald-600 dark:text-emerald-400" />
             </div>
           </div>
-          <h2 className="text-2xl font-bold dark:text-white text-zinc-900 text-center mb-2">
+          <h1 className="text-3xl font-extrabold text-center text-emerald-600 dark:text-emerald-500 mb-2">
+            EcoNudge
+          </h1>
+          <p 
+            className="text-center text-xs text-zinc-600 dark:text-zinc-400 mb-6 px-4 leading-relaxed" 
+            style={{ fontFamily: "'Courier New', Courier, monospace", letterSpacing: "0.05em" }}
+          >
+            An automated behavioral nudging ecosystem for resource management and performance optimization.
+          </p>
+          <h2 className="text-xl font-bold dark:text-white text-zinc-900 text-center mb-2">
             {isLoginMode ? 'Sign In' : 'Join Community Clash'}
           </h2>
           <p className="text-center dark:text-zinc-500 text-zinc-500 text-sm mb-8">
