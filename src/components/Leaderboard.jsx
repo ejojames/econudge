@@ -23,7 +23,7 @@ const Leaderboard = () => {
     const fetchLeaderboard = async () => {
       if (!user || !user.orgKey) return;
       try {
-        const res = await fetch('http://localhost:5000/api/leaderboard', {
+        const res = await fetch('/api/leaderboard', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ orgKey: user.orgKey })
@@ -68,7 +68,7 @@ const Leaderboard = () => {
       : { username: sanitizedUsername, password: passwordInput, orgKey: sanitizedOrgKey, department: finalDepartment };
 
     try {
-      const res = await fetch(`http://localhost:5000${endpoint}`, {
+      const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -82,7 +82,7 @@ const Leaderboard = () => {
       }
     } catch (e) {
       console.error('Authentication network error:', e);
-      setAuthError('Connection failure: Ensure your local Node backend is running on Port 5000');
+      setAuthError('Connection failure: Ensure you have an active network connection.');
     } finally {
       setIsLoading(false);
     }
@@ -92,7 +92,7 @@ const Leaderboard = () => {
     if (!window.confirm("Are you sure you want to permanently delete your account and leaderboard scores?")) return;
     
     try {
-      const res = await fetch('http://localhost:5000/api/user/purge', {
+      const res = await fetch('/api/user/purge', {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId: user.id })

@@ -62,7 +62,7 @@ export const EcoProvider = ({ children }) => {
     
     // Sync to backend silently
     try {
-      await fetch('http://localhost:5000/api/user/sync-streak', {
+      await fetch('/api/user/sync-streak', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId: user.id, xpChange: amount })
