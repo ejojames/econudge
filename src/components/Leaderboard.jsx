@@ -135,7 +135,7 @@ const Leaderboard = () => {
           <div className="space-y-4 font-sans">
             <div>
               <div className="flex justify-between items-end mb-1">
-                <label className="block text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Room Key / Org Code</label>
+                <label htmlFor="auth-org-key" className="block text-xs font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Room Key / Org Code</label>
                 {!isLoginMode && (
                   <button 
                     onClick={generateRoomKey}
@@ -146,6 +146,7 @@ const Leaderboard = () => {
                 )}
               </div>
               <input 
+                id="auth-org-key"
                 type="text" 
                 value={orgKeyInput}
                 onChange={e => setOrgKeyInput(e.target.value.toUpperCase())}
@@ -155,8 +156,9 @@ const Leaderboard = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-zinc-500 dark:text-zinc-400 mb-1 uppercase tracking-wider">Username</label>
+              <label htmlFor="auth-username" className="block text-xs font-bold text-zinc-500 dark:text-zinc-400 mb-1 uppercase tracking-wider">Username</label>
               <input 
+                id="auth-username"
                 type="text" 
                 value={usernameInput}
                 onChange={e => setUsernameInput(e.target.value)}
@@ -166,8 +168,9 @@ const Leaderboard = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-zinc-500 dark:text-zinc-400 mb-1 uppercase tracking-wider">Password</label>
+              <label htmlFor="auth-password" className="block text-xs font-bold text-zinc-500 dark:text-zinc-400 mb-1 uppercase tracking-wider">Password</label>
               <input 
+                id="auth-password"
                 type="password" 
                 value={passwordInput}
                 onChange={e => setPasswordInput(e.target.value)}
@@ -179,8 +182,9 @@ const Leaderboard = () => {
 
             {!isLoginMode && (
               <div>
-                <label className="block text-xs font-bold text-zinc-500 dark:text-zinc-400 mb-1 uppercase tracking-wider">Group / Department</label>
+                <label htmlFor="auth-department" className="block text-xs font-bold text-zinc-500 dark:text-zinc-400 mb-1 uppercase tracking-wider">Group / Department</label>
                 <select 
+                  id="auth-department"
                   value={departmentInput}
                   onChange={e => setDepartmentInput(e.target.value)}
                   className="w-full dark:bg-zinc-900 bg-zinc-50 border dark:border-zinc-800 border-zinc-200 p-3 rounded-sm outline-none text-zinc-800 dark:text-zinc-200 cursor-pointer appearance-none transition-colors"
