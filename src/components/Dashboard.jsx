@@ -190,7 +190,7 @@ const Dashboard = () => {
                 </h3>
               </div>
 
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="flex flex-col">
                   <div className="flex items-center gap-1 mb-1">
                     <Wind className="w-3.5 h-3.5 dark:text-zinc-500 text-zinc-400" />
@@ -242,10 +242,10 @@ const Dashboard = () => {
             </motion.div>
 
             <div className="flex items-baseline gap-2 mb-4 mt-2">
-              <span className={`text-6xl font-bold tracking-tighter ${getSeverityColor(safeTotalFootprint)}`}>
+              <span className={`text-5xl sm:text-6xl font-bold tracking-tighter ${getSeverityColor(safeTotalFootprint)}`}>
                 {safeTotalFootprint.toLocaleString()}
               </span>
-              <span className="text-xl dark:text-zinc-600 text-zinc-400 font-bold">KG CO₂</span>
+              <span className="text-lg sm:text-xl dark:text-zinc-600 text-zinc-400 font-bold">KG CO₂</span>
             </div>
             
             <motion.p 
@@ -259,7 +259,7 @@ const Dashboard = () => {
           </motion.div>
 
           {/* Equivalents Grid */}
-          <div className="grid grid-cols-2 gap-4 flex-1">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1">
             <motion.div 
               className="bg-white dark:bg-emerald-950/10 rounded-sm border border-zinc-200 dark:border-emerald-500/20 hover:border-emerald-400 dark:hover:border-emerald-500 transition-colors duration-200 p-5 flex flex-col justify-center group shadow-sm" 
               initial={{ opacity: 0, y: 10 }}

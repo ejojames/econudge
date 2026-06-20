@@ -10,7 +10,7 @@ const MainApp = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
 
   return (
-    <div className="flex h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 transition-colors duration-200 overflow-hidden font-sans">
+    <div className="flex flex-col lg:flex-row h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 transition-colors duration-200 overflow-hidden font-sans">
       <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
       
       <main className="flex-1 relative overflow-y-auto bg-zinc-50 dark:bg-zinc-950 transition-colors duration-200">
@@ -22,7 +22,7 @@ const MainApp = () => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.3 }}
-              className="absolute inset-0 p-8"
+              className="absolute inset-0 p-4 md:p-8 overflow-x-hidden"
             >
               <Dashboard />
             </motion.div>
@@ -34,7 +34,7 @@ const MainApp = () => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.3 }}
-              className="absolute inset-0 p-8"
+              className="absolute inset-0 p-4 md:p-8 overflow-x-hidden"
             >
               <EcoSimulator />
             </motion.div>
@@ -46,7 +46,7 @@ const MainApp = () => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.3 }}
-              className="absolute inset-0 p-8"
+              className="absolute inset-0 p-4 md:p-8 overflow-x-hidden"
             >
               <Leaderboard />
             </motion.div>
