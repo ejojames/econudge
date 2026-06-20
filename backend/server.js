@@ -30,20 +30,26 @@ app.use('/api/user', userRoutes);
 app.use(express.static(path.join(__dirname, '..', 'dist')));
 
 // SPA Catch-All Routing
-app.get('/{*splat}', (req, res) => {
+app.get('/{*splat}', (req, res, next) => {
     if (!req.path.startsWith('/api')) {
         res.sendFile(path.resolve(__dirname, '..', 'dist', 'index.html'));
+    } else {
+        next();
     }
 });
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/ecoNudge')
-  .then(() => {
-    console.log(`Connected to MongoDB (${process.env.MONGO_URI ? 'Cloud' : 'Local'})`);
-    app.listen(PORT, () => {
-      console.log(`Backend server running on http://localhost:${PORT}`);
+if (process.env.NODE_ENV !== 'test') {
+  mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/ecoNudge')
+    .then(() => {
+      console.log(`Connected to MongoDB (${process.env.MONGO_URI ? 'Cloud' : 'Local'})`);
+      app.listen(PORT, () => {
+        console.log(`Backend server running on http://localhost:${PORT}`);
+      });
+    })
+    .catch((error) => {
+      console.error('MongoDB connection error:', error);
     });
-  })
-  .catch((error) => {
-    console.error('MongoDB connection error:', error);
-  });
+}
+
+export default app;

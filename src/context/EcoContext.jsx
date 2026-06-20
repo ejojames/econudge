@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
+import { calculateFootprint } from '../utils.js';
 
 export const EcoContext = createContext();
 
@@ -80,20 +81,8 @@ export const EcoProvider = ({ children }) => {
 
   const [totalFootprint, setTotalFootprint] = useState(0);
 
-  // Carbon calculation constants
-  const COMMUTE_FACTOR = 0.12 * 365; // kg CO2 per km per year
-  const DIET_FACTORS = [1000, 1500, 2500, 3300]; // kg CO2 per year
-  const AC_FACTOR = 1.5 * 0.82 * 365; // kg CO2 per hour of AC per year
-  const FLIGHT_FACTOR = 250; // kg CO2 per flight
-
   useEffect(() => {
-    const calc = 
-      (commute * COMMUTE_FACTOR) + 
-      DIET_FACTORS[diet] + 
-      (acUsage * AC_FACTOR) + 
-      (flights * FLIGHT_FACTOR);
-    
-    setTotalFootprint(Math.round(calc));
+    setTotalFootprint(calculateFootprint(commute, diet, acUsage, flights));
   }, [commute, diet, acUsage, flights]);
 
   return (
