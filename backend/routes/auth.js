@@ -93,7 +93,7 @@ router.post('/login', async (req, res, next) => {
     const cleanUsername = username.trim().toLowerCase();
     const cleanOrgKey = orgKey.trim().toUpperCase();
 
-    const user = await User.findOne({ username: cleanUsername, orgKey: cleanOrgKey });
+    const user = await User.findOne({ username: cleanUsername, orgKey: cleanOrgKey }).select('+password');
     if (!user) {
       return res.status(400).json({ error: 'Invalid credentials' });
     }

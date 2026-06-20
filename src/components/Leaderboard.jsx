@@ -32,9 +32,8 @@ const Leaderboard = () => {
           const data = await res.json();
           setLeaderboardData(data);
         }
-      } catch (err) {
-        console.error("Leaderboard fetch error:", err);
-        // Silently fail on polling so we don't spam the UI, but log it
+      } catch {
+        // Silently fail on polling — stale data is acceptable, UI is not spammed
       }
     };
     
@@ -80,8 +79,7 @@ const Leaderboard = () => {
       } else {
         setAuthError(data.error);
       }
-    } catch (e) {
-      console.error('Authentication network error:', e);
+    } catch {
       setAuthError('Connection failure: Ensure you have an active network connection.');
     } finally {
       setIsLoading(false);

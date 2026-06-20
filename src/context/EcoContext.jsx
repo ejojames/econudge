@@ -68,8 +68,8 @@ export const EcoProvider = ({ children }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId: user.id, xpChange: amount })
       });
-    } catch (e) {
-      console.error('Failed to sync XP');
+    } catch {
+      // XP sync is non-critical background operation — fail silently
     }
   };
 

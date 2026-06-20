@@ -1,13 +1,15 @@
 /**
  * EcoNudge: An automated behavioral nudging ecosystem built for resource management optimization.
  */
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, Suspense, lazy } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { EcoProvider, EcoContext } from './context/EcoContext';
 import Sidebar from './components/Sidebar';
 import Dashboard from './components/Dashboard';
-import EcoSimulator from './components/EcoSimulator';
-import Leaderboard from './components/Leaderboard';
+
+// Dynamic imports: secondary views only load when first requested
+const EcoSimulator = lazy(() => import('./components/EcoSimulator'));
+const Leaderboard = lazy(() => import('./components/Leaderboard'));
 
 const MainApp = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -17,44 +19,50 @@ const MainApp = () => {
       <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
       
       <main className="flex-1 relative overflow-y-auto bg-zinc-50 dark:bg-zinc-950 transition-colors duration-200">
-        <AnimatePresence mode="wait">
-          {activeTab === 'dashboard' && (
-            <motion.div
-              key="dashboard"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.3 }}
-              className="absolute inset-0 p-4 md:p-8"
-            >
-              <Dashboard />
-            </motion.div>
-          )}
-          {activeTab === 'simulator' && (
-            <motion.div
-              key="simulator"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.3 }}
-              className="absolute inset-0 p-4 md:p-8"
-            >
-              <EcoSimulator />
-            </motion.div>
-          )}
-          {activeTab === 'leaderboard' && (
-            <motion.div
-              key="leaderboard"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.3 }}
-              className="absolute inset-0 p-4 md:p-8"
-            >
-              <Leaderboard />
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <Suspense fallback={
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-6 h-6 rounded-full border-2 border-emerald-500 border-t-transparent animate-spin" />
+          </div>
+        }>
+          <AnimatePresence mode="wait">
+            {activeTab === 'dashboard' && (
+              <motion.div
+                key="dashboard"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.3 }}
+                className="absolute inset-0 p-4 md:p-8"
+              >
+                <Dashboard />
+              </motion.div>
+            )}
+            {activeTab === 'simulator' && (
+              <motion.div
+                key="simulator"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.3 }}
+                className="absolute inset-0 p-4 md:p-8"
+              >
+                <EcoSimulator />
+              </motion.div>
+            )}
+            {activeTab === 'leaderboard' && (
+              <motion.div
+                key="leaderboard"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.3 }}
+                className="absolute inset-0 p-4 md:p-8"
+              >
+                <Leaderboard />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </Suspense>
       </main>
     </div>
   );

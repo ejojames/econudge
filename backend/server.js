@@ -19,8 +19,10 @@ dotenv.config({ path: path.join(__dirname, '.env') });
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Restrict CORS to the explicit production frontend origin (or localhost for development)
+const ALLOWED_ORIGIN = process.env.FRONTEND_URL || 'http://localhost:5173';
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: ALLOWED_ORIGIN,
   credentials: true
 }));
 
@@ -58,10 +60,9 @@ app.use('/api/user', userRoutes);
 
 // Centralized Global Error Handling Middleware
 app.use((err, req, res, next) => {
-  console.error('[Global Error]', err.stack || err);
-  res.status(err.status || 500).json({ 
-    success: false, 
-    message: err.message || "Internal Server Error" 
+  res.status(err.status || 500).json({
+    success: false,
+    message: err.message || 'Internal Server Error'
   });
 });
 
@@ -81,13 +82,10 @@ app.get('/{*splat}', (req, res, next) => {
 if (process.env.NODE_ENV !== 'test') {
   mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/ecoNudge')
     .then(() => {
-      console.log(`Connected to MongoDB (${process.env.MONGO_URI ? 'Cloud' : 'Local'})`);
-      app.listen(PORT, () => {
-        console.log(`Backend server running on http://localhost:${PORT}`);
-      });
+      app.listen(PORT);
     })
-    .catch((error) => {
-      console.error('MongoDB connection error:', error);
+    .catch(() => {
+      process.exit(1);
     });
 }
 
