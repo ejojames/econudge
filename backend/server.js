@@ -81,7 +81,7 @@ app.get('/{*splat}', (req, res, next) => {
 // Connect to MongoDB — credentials loaded strictly from environment, never hardcoded
 if (process.env.NODE_ENV !== 'test') {
   // Graceful error listener for unexpected post-connection failures
-  mongoose.connection.on('error', err => console.error('Database connection error:', err));
+  mongoose.connection.on('error', err => process.stderr.write(`Database connection error: ${err}\n`));
 
   mongoose.connect(process.env.MONGO_URI, {
     maxPoolSize: 10,
