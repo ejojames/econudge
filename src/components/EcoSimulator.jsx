@@ -116,7 +116,7 @@ const EcoSimulator = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.4 }}
         >
-          <div className="bg-white dark:bg-zinc-900/40 rounded-sm p-6 shadow-sm border border-zinc-200 dark:border-zinc-800 transition-colors duration-200">
+          <div className="bg-white dark:bg-zinc-900/40 rounded-sm p-4 sm:p-6 shadow-sm border border-zinc-200 dark:border-zinc-800 transition-colors duration-200">
             
             <div className="flex items-center gap-3 mb-8 w-full overflow-x-auto hide-scrollbar pb-2">
               {['daily', 'weekly', 'monthly', 'annual'].map((t) => (
@@ -149,13 +149,13 @@ const EcoSimulator = () => {
                     aria-label={`Toggle habit: ${habit.label}`}
                     onKeyDown={(e) => { if (e.key === 'Enter') toggleHabit(habit.id); }}
                     whileHover={{ scale: 1.01 }}
-                    className={`flex items-center justify-between gap-6 p-5 rounded-sm cursor-pointer border transition-all duration-300 shadow-sm ${
+                    className={`flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6 p-3 sm:p-5 rounded-sm cursor-pointer border transition-all duration-300 shadow-sm ${
                       isChecked 
                         ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-300 dark:border-emerald-500/50' 
                         : 'bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700'
                     }`}
                   >
-                    <div className="flex items-center gap-4 flex-1">
+                    <div className="flex items-center gap-3 sm:gap-4 flex-1 w-full">
                       <div className={`shrink-0 w-6 h-6 border rounded-sm flex items-center justify-center transition-colors ${
                         isChecked ? 'bg-emerald-500 border-emerald-500' : 'bg-zinc-50 dark:bg-zinc-800 border-zinc-300 dark:border-zinc-700'
                       }`}>
@@ -167,7 +167,7 @@ const EcoSimulator = () => {
                       </p>
                     </div>
 
-                    <div className="flex flex-col items-end shrink-0">
+                    <div className="flex flex-col items-start sm:items-end shrink-0 pl-9 sm:pl-0">
                       <p className="font-mono text-xs dark:text-emerald-400 text-emerald-600 font-bold tracking-tight">
                         Saves {habitSaved} KG CO₂ / {timeline.toUpperCase()}
                       </p>
@@ -200,7 +200,7 @@ const EcoSimulator = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <div className="relative z-10 flex flex-col items-center justify-center h-full p-8 text-center min-h-[400px]">
+          <div className="relative z-10 flex flex-col items-center justify-center h-full p-4 sm:p-8 text-center min-h-[400px]">
             <div className="relative w-64 h-64 mb-10 flex items-center justify-center">
               {/* Background Circle */}
               <svg className="absolute w-full h-full -rotate-90" viewBox="0 0 200 200">
