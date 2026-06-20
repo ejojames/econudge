@@ -7,6 +7,10 @@ import { fileURLToPath } from 'url';
 import authRoutes from './routes/auth.js';
 import leaderboardRoutes from './routes/leaderboard.js';
 import userRoutes from './routes/user.js';
+import helmet from 'helmet';
+import compression from 'compression';
+import mongoSanitize from 'express-mongo-sanitize';
+import rateLimit from 'express-rate-limit';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -19,7 +23,21 @@ app.use(cors({
   origin: 'http://localhost:5173',
   credentials: true
 }));
+
+// Apply security and performance middleware
+app.use(helmet({
+  contentSecurityPolicy: false, // Prevents blocking local Vite React frontend testing
+}));
+app.use(compression());
 app.use(express.json());
+app.use(mongoSanitize());
+
+// Configure standard rate limiter
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per windowMs
+});
+app.use('/api', limiter);
 
 // Routes
 app.use('/api/auth', authRoutes);
