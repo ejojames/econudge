@@ -30,6 +30,18 @@ app.use(helmet({
 }));
 app.use(compression());
 app.use(express.json());
+
+// Express 5 Compatibility Layer: Make req.query mutable for mongoSanitize
+app.use((req, res, next) => {
+    Object.defineProperty(req, 'query', {
+        value: { ...req.query },
+        writable: true,
+        configurable: true,
+        enumerable: true
+    });
+    next();
+});
+
 app.use(mongoSanitize());
 
 // Configure standard rate limiter
