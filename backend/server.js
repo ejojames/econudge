@@ -30,7 +30,7 @@ app.use('/api/user', userRoutes);
 app.use(express.static(path.join(__dirname, '..', 'dist')));
 
 // SPA Catch-All Routing
-app.get('*', (req, res) => {
+app.get('(.*)', (req, res) => {
     res.sendFile(path.resolve(__dirname, '..', 'dist', 'index.html'));
 });
 
