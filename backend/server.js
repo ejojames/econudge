@@ -26,6 +26,16 @@ app.use('/api/auth', authRoutes);
 app.use('/api/leaderboard', leaderboardRoutes);
 app.use('/api/user', userRoutes);
 
+// Serve Frontend Static Assets
+app.use(express.static(path.join(__dirname, '../dist')));
+
+// SPA Catch-All Routing
+app.get('*', (req, res) => {
+    if (!req.path.startsWith('/api')) {
+        res.sendFile(path.join(__dirname, '../dist', 'index.html'));
+    }
+});
+
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/ecoNudge')
   .then(() => {
