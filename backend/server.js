@@ -78,9 +78,16 @@ app.get('/{*splat}', (req, res, next) => {
     }
 });
 
-// Connect to MongoDB
+// Connect to MongoDB — credentials loaded strictly from environment, never hardcoded
 if (process.env.NODE_ENV !== 'test') {
-  mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/ecoNudge')
+  // Graceful error listener for unexpected post-connection failures
+  mongoose.connection.on('error', err => console.error('Database connection error:', err));
+
+  mongoose.connect(process.env.MONGO_URI, {
+    maxPoolSize: 10,
+    serverSelectionTimeoutMS: 5000,
+    socketTimeoutMS: 45000,
+  })
     .then(() => {
       app.listen(PORT);
     })
